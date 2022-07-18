@@ -3,6 +3,31 @@ name: Actions Workflow
 on: [push]
 
 jobs:
+  checkout-action:
+    runs-on: ubuntu-latest
+    steps:
+      - name: -- BEFORE -- List files
+      - run: |
+            pwd
+            ls -la
+            echo $GITHUB_SHA
+            echo $GITHUB_REPOSITORY
+            echo $GITHUB_WORKSPACE
+            echo "${{github.token}}"
+      - name: Checkout
+        uses: actions/checkout@v1
+      - name:  -- AFTER CHECKOUT -- List files
+        run: |
+            pwd
+            ls -la
+
+      - name: Default envs vars
+      - run: |
+            echo $GITHUB_SHA
+            echo $GITHUB_REPOSITORY
+            echo $GITHUB_WORKSPACE
+            echo "${{github.token}}"
+
   run-github-actions:
     runs-on: ubuntu-latest
     steps:
