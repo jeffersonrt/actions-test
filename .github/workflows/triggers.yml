@@ -1,0 +1,37 @@
+name: Triggers
+on:
+  repository_dispatch:
+    types: [my_event]
+
+  # filter workflows
+  push:
+    # branches-ignore:
+    branches:
+      - master
+      - "feature/*" # matches feature/featA, feature/featB
+      - "feature/**" # matches feature/featA/test, feature/featB/testB
+      - "!feature/featC" #ignore specific branch
+    # tags-ignore:
+    tags:
+      - v1.*
+
+    # paths-ignore:
+    paths:
+      - "**.js"
+      - "**.md"
+  # schedule:
+  #   - cron: "*/5 * * * *"
+  #   - cron: "*/6 * * * *"
+jobs:
+  example-job:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Greetings
+        uses: actions/hello-world-javascript-action@v1
+        with:
+          who-to-greet: Jeff
+      - name: From dispatch
+        run: |
+          echo "Trigger from dispatch"
+          echo "Param 1: ${{ github.event.client_payload.other}}" 
+          echo "Param 2: ${{ github.event.client_payload.unit}}" 
